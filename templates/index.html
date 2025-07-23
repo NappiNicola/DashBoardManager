@@ -13,6 +13,20 @@
     <header class="text-center">
       <h1 class="text-3xl font-bold text-blue-700">Gestione Vendite</h1>
       <p class="text-sm text-gray-600">Traccia acquisti, vendite e profitti</p>
+      <br>
+      {% if session.get('is_admin') %}
+        <a href="{{ url_for('crea_utente') }}">
+          <button style="color: blue; font-weight: bold; background-color: transparent; border: 1px solid blue; border-radius: 5px; padding: 5px 10px; cursor: pointer;">
+            Crea nuovo utente
+          </button>
+        </a>
+      {% endif %}
+      <button style="background: none; border: none; padding: 0; margin: 0;">
+        <a href="{{ url_for('logout') }}" style="color: red; background-color: transparent; border: 1px solid red; border-radius: 5px; padding: 5px 10px; cursor: pointer; text-decoration: none; font-weight: bold;">
+          Logout
+        </a>
+      </button>
+
     </header>
 
     <section class="bg-white rounded-xl shadow p-4">
