@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestione Prodotti</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800 p-4">
+  <div class="max-w-6xl mx-auto space-y-6">
+    <header class="text-center">
+      <h1 class="text-3xl font-bold text-blue-700">Gestione Vendite</h1>
+      <p class="text-sm text-gray-600">Traccia acquisti, vendite e profitti</p>
+    </header>
+
+    <section class="bg-white rounded-xl shadow p-4">
+      <form id="form-add" class="grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto_auto] gap-2 items-end">
+        <input id="nome" required placeholder="Nome oggetto" class="border p-2 rounded w-full">
+        <input id="acquisto" type="number" step="0.01" required placeholder="Prezzo acquisto" class="border p-2 rounded w-full">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full sm:w-auto">Aggiungi</button>
+        <a href="/export" class="text-sm text-blue-600 hover:underline text-right sm:text-left w-full sm:w-auto">📥 Esporta Excel</a>
+      </form>
+    </section>
+
+    <section class="overflow-x-auto">
+      <table class="min-w-full bg-white shadow rounded-xl text-sm sm:text-base">
+        <thead class="bg-blue-100 text-blue-900">
+          <tr>
+            <th class="p-2 text-left">Nome</th>
+            <th class="p-2 text-left">Acquisto</th>
+            <th class="p-2 text-left">Vendita</th>
+            <th class="p-2 text-left">Profitto</th>
+            <th class="p-2 text-left">Azioni</th>
+          </tr>
+        </thead>
+          <tbody id="product-body">
+          <!-- Riempito via JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <section class="bg-white p-4 shadow rounded-xl space-y-4">
+      <h2 class="text-xl font-semibold">Statistiche</h2>
+      <p>Totale speso: <strong id="speso" class="text-red-600">€ {{ "%.2f"|format(tot_acquisto) }}</strong></p>
+      <p>Totale incassato: <strong id="guadagnato" class="text-green-600">€ {{ "%.2f"|format(tot_vendita) }}</strong></p>
+      <p>Profitto netto: <strong id="profitto" class="text-blue-600">€ {{ "%.2f"|format(profitto) }}</strong></p>
+      <canvas id="chart" class="max-w-full h-48"></canvas>
+        <button onclick="aggiornaGrafico()" class="mt-2 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">
+          🔄 Aggiorna Grafico
+        </button>
+    </section>
+  </div>
+
+
+  <script>
+    const speso = {{ tot_acquisto }};
+    const guadagnato = {{ tot_vendita }};
+  </script>
+</body>
+</html>
