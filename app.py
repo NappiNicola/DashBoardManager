@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify, send_file, session, url_for
+from flask import Flask, render_template, request, redirect, jsonify, send_file, session, url_for, abort
 import sqlite3
 import os
 import pandas as pd
@@ -159,6 +159,26 @@ def crea_utente():
 
     return render_template('crea_utente.html', error=error)
 
+from flask import session, abort
+
+@app.route('/admin/users')
+def admin_users():
+    if not session.get('is_admin'):
+        abort(403)  # accesso negato
+
+    db = get_db()
+    users = db.execute("SELECT id, username, is_admin FROM utenti").fetchall()
+    return render_template('admin_users.html', users=users)
+
+@app.route('/admin/users/delete/<int:user_id>', methods=['POST'])
+def admin_delete_user(user_id):
+    if not session.get('is_admin'):
+        abort(403)
+
+    db = get_db()
+    db.execute("DELETE FROM utenti WHERE id = ?", (user_id,))
+    db.commit()
+    return jsonify(success=True)
 
 
 if __name__ == '__main__':
