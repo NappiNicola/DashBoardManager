@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify, send_file, session, url_for, abort
+from flask import Flask, render_template, request, redirect, jsonify, send_file, session, url_for, abort, flash
 import sqlite3
 import os
 import pandas as pd
@@ -122,6 +122,7 @@ def login():
             session['logged_in'] = True
             session['username'] = username
             session['is_admin'] = user['is_admin']
+            session['user_id'] = user['id']
             return redirect(url_for('index'))
         else:
             error = 'Credenziali non valide'
@@ -191,14 +192,18 @@ def cambia_password():
         confirm_password = request.form['confirm_password']
 
         db = get_db()
-        user = db.execute("SELECT * FROM users WHERE id = ?", (session['user_id'],)).fetchone()
+        user = db.execute("SELECT * FROM utenti WHERE id = ?", (session['user_id'],)).fetchone()
 
-        if user['password'] != old_password:
+        # hashed_pw = generate_password_hash(old_password)
+        # print("Vecchia password inserita: " + hashed_pw)
+        # print("Vecchia password a DB: " + user['password'])
+        if not check_password_hash(user['password'], old_password):
             flash('Vecchia password errata.')
         elif new_password != confirm_password:
             flash('Le nuove password non corrispondono.')
         else:
-            db.execute("UPDATE users SET password = ? WHERE id = ?", (new_password, session['user_id']))
+            hashed_pw = generate_password_hash(new_password)
+            db.execute("UPDATE utenti SET password = ? WHERE id = ?", (hashed_pw, session['user_id']))
             db.commit()
             flash('Password aggiornata con successo!')
 
