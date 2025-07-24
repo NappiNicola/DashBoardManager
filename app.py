@@ -180,6 +180,29 @@ def admin_delete_user(user_id):
     db.commit()
     return jsonify(success=True)
 
+@app.route('/cambia_password', methods=['GET', 'POST'])
+def cambia_password():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        old_password = request.form['old_password']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        db = get_db()
+        user = db.execute("SELECT * FROM users WHERE id = ?", (session['user_id'],)).fetchone()
+
+        if user['password'] != old_password:
+            flash('Vecchia password errata.')
+        elif new_password != confirm_password:
+            flash('Le nuove password non corrispondono.')
+        else:
+            db.execute("UPDATE users SET password = ? WHERE id = ?", (new_password, session['user_id']))
+            db.commit()
+            flash('Password aggiornata con successo!')
+
+    return render_template('cambia_password.html')
 
 if __name__ == '__main__':
     init_db()

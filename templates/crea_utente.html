@@ -2,35 +2,75 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crea nuovo utente</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: sans-serif;
             background: #f0f0f0;
+            margin: 0;
+            padding: 0;
             display: flex;
-            height: 100vh;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px 14px;
+            background-color: #4f46e5;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
         .form-box {
             background: white;
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 0 10px #ccc;
+            width: 90%;
+            max-width: 400px;
         }
-        input, label {
-            display: block;
+
+        h2 {
+            margin-top: 0;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
             margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-        button {
+
+        label {
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        button[type="submit"] {
             margin-top: 1rem;
-            padding: 0.5rem;
+            padding: 0.7rem;
             width: 100%;
             background-color: #6366f1;
             color: white;
             border: none;
             border-radius: 5px;
+            font-size: 1rem;
         }
+
         .error {
             color: red;
             margin-top: 0.5rem;
@@ -38,6 +78,9 @@
     </style>
 </head>
 <body>
+
+    <a href="{{ url_for('index') }}" class="back-button">Torna alla Home</a>
+
     <div class="form-box">
         <form method="POST">
             <h2>Crea nuovo utente</h2>
@@ -50,5 +93,6 @@
             {% endif %}
         </form>
     </div>
+
 </body>
 </html>

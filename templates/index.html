@@ -27,6 +27,11 @@
         </a>
       {% endif %}
       <button style="background: none; border: none; padding: 0; margin: 0;">
+        <a href="{{ url_for('cambia_password') }}" style="color: green; background-color: transparent; border: 1px solid green; border-radius: 5px; padding: 5px 10px; cursor: pointer; text-decoration: none; font-weight: bold;">
+          Cambia Password
+        </a>
+      </button>
+      <button style="background: none; border: none; padding: 0; margin: 0;">
         <a href="{{ url_for('logout') }}" style="color: red; background-color: transparent; border: 1px solid red; border-radius: 5px; padding: 5px 10px; cursor: pointer; text-decoration: none; font-weight: bold;">
           Logout
         </a>
